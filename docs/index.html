@@ -546,10 +546,6 @@
         <span class="tile-icon"><img src="https://cdn.simpleicons.org/androidstudio/3DDC84" alt="" loading="lazy"></span>
         <span class="tile-body"><span class="tile-name">Android Studio</span><span class="tile-desc">Android IDE</span></span>
       </a>
-      <a class="tile" href="https://brave.com" target="_blank" rel="noopener">
-        <span class="tile-icon"><img src="https://cdn.simpleicons.org/brave/FB542B" alt="" loading="lazy"></span>
-        <span class="tile-body"><span class="tile-name">Brave</span><span class="tile-desc">Browser</span></span>
-      </a>
       <a class="tile" href="https://1password.com" target="_blank" rel="noopener">
         <span class="tile-icon"><img src="https://cdn.simpleicons.org/1password/0572EC" alt="" loading="lazy"></span>
         <span class="tile-body"><span class="tile-name">1Password</span><span class="tile-desc">Password manager</span></span>
@@ -626,8 +622,9 @@
       <li><strong>1Password ready.</strong><em>Pauses until the GUI is unlocked with CLI integration and the SSH agent enabled.</em></li>
       <li><strong>SSH via 1Password.</strong><em>Wires <code>~/.ssh/config</code> to the 1Password SSH agent and uploads the public key (via <code>op</code> + <code>gh</code>) to GitHub for both auth and signing.</em></li>
       <li><strong>Repo origin → SSH.</strong><em>Switches the cloned repo from HTTPS to <code>git@github.com</code> once SSH is verified.</em></li>
-      <li><strong>Override stubs.</strong><em>Creates empty <code>.gitconfig.local</code>, <code>.zshrc.local</code>, <code>config.local</code> so stowed configs can source them.</em></li>
-      <li><strong>Stow.</strong><em>Symlinks zsh, git, Claude, and Codex configs into <code>$HOME</code>.</em></li>
+      <li><strong>Override stubs.</strong><em>Creates empty <code>.gitconfig.local</code> and <code>.zshrc.local</code> so stowed configs can source them.</em></li>
+      <li><strong>Stow.</strong><em>Symlinks stable zsh, git, and helper scripts into <code>$HOME</code>.</em></li>
+      <li><strong>AI agent configs.</strong><em>Creates local Claude and Codex yolo configs only when missing, without stowing files that the apps mutate.</em></li>
       <li><strong>Secrets from 1Password.</strong><em>Reads the <code>stack env</code> item and writes <code>UPPER_SNAKE_CASE</code> fields as <code>export</code>s into <code>~/.zshrc.local</code>.</em></li>
       <li><strong>Claude + Codex sign-in.</strong><em>Launches each CLI for interactive auth.</em></li>
       <li><strong>Claude MCP servers.</strong><em>Registers Paddle sandbox and production servers.</em></li>
@@ -641,7 +638,7 @@
     <div class="followups">
       <strong>The one thing the script can't do for you:</strong>
       <ul>
-        <li>Sign in to apps with GUI-only auth (1Password, Brave sync)</li>
+        <li>Sign in to apps with GUI-only auth (1Password)</li>
       </ul>
     </div>
   </section>

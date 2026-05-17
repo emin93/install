@@ -15,7 +15,7 @@ REPO_OWNER="emin93"
 REPO_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}.git"
 REPO_SSH_URL="git@github.com:${REPO_OWNER}/${REPO_NAME}.git"
 REPO_DIR="${HOME}/Documents/Projects/${REPO_NAME}"
-STOW_PACKAGES=(git zsh claude codex bin)
+STOW_PACKAGES=(git zsh bin)
 PNPM_GLOBAL=(postiz wrangler @paddle/paddle-mcp)
 OP_ENV_ITEM="stack env"
 OP_ENV_MARKER_BEGIN="# >>> stack: 1password-managed env (do not edit) >>>"
@@ -31,8 +31,6 @@ STOW_TARGETS=(
   "${HOME}/.gitconfig"
   "${HOME}/.hushlogin"
   "${HOME}/.zshrc"
-  "${HOME}/.claude/settings.json"
-  "${HOME}/.codex/config.toml"
   "${HOME}/.local/bin/paddle-sandbox"
   "${HOME}/.local/bin/paddle-prod"
 )
@@ -316,6 +314,47 @@ step_stow() {
   ok "stowed: ${STOW_PACKAGES[*]}"
 }
 
+step_ai_agent_configs() {
+  step "Claude and Codex yolo configs"
+  mkdir -p "${HOME}/.claude" "${HOME}/.codex"
+
+  if [[ -e "${HOME}/.claude/settings.json" || -L "${HOME}/.claude/settings.json" ]]; then
+    ok "~/.claude/settings.json already exists; leaving it alone."
+  else
+    install -m 600 /dev/stdin "${HOME}/.claude/settings.json" <<'EOF'
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
+  "skipDangerousModePermissionPrompt": true
+}
+EOF
+    ok "created ~/.claude/settings.json."
+  fi
+
+  if [[ -e "${HOME}/.codex/config.toml" || -L "${HOME}/.codex/config.toml" ]]; then
+    ok "~/.codex/config.toml already exists; leaving it alone."
+  else
+    install -m 600 /dev/stdin "${HOME}/.codex/config.toml" <<'EOF'
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+
+[mcp_servers.paddle]
+command = "paddle-sandbox"
+env_vars = ["PADDLE_SANDBOX_API_KEY"]
+
+[mcp_servers.paddle-prod]
+command = "paddle-prod"
+env_vars = ["PADDLE_PROD_API_KEY"]
+EOF
+    ok "created ~/.codex/config.toml."
+  fi
+}
+
 step_local_overrides() {
   step "Local override files"
   for f in "${LOCAL_OVERRIDES[@]}"; do
@@ -527,6 +566,7 @@ STEPS=(
   step_repo_remote_ssh
   step_local_overrides
   step_stow
+  step_ai_agent_configs
   step_secrets_from_1password
   step_claude_signin
   step_codex_signin
